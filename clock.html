@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame Clock</title>
+    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+    <script>
+        AFRAME.registerComponent('metronome', {
+            schema: {
+                //beats per minute
+                bpm: {
+                    type: 'number',
+                    default: 80,
+                },
+                beatLen: { type: 'number' },
+                tickLen: { type: 'number' },
+                beatsPerBar: { type: 'number', default: 4},
+                barsPerLoop: { type: 'number', default: 4},
+                prevBeat: { type: 'number'},
+                currentBeat:{ type: 'number'},
+                prevTick: { type: 'number'},
+                currentTick:{ type: 'number'},
+                beatInLoop: { type: 'number'},
+                tickInLoop: { type: 'number'},
+
+                startTime : { default: performance.now() + 500 }
+            },
+            init: function(){
+                console.log('initialized!')
+                this.data.beatLen = 60000 / this.data.bpm
+                this.data.tickLen = this.data.beatLen / 12
+                console.log(this.data)
+
+            },
+            tick: function(){
+                if ( this.data.prevBeat != this.data.currentBeat){
+                    console.log('beat in loop',this.data.beatInLoop)
+                    console.log('beat in bar', this.data.beatInBar)
+                    console.log('bar in loop', this.data.barInLoop)
+                    console.log('=-=-=-=-=-=-=-=')
+                }
+                var timeElapsed = (performance.now() - this.data.startTime)
+                this.data.prevBeat = this.data.currentBeat
+                this.data.prevTick = this.data.currentTick
+                this.data.currentTick = Math.floor(timeElapsed / this.data.tickLen)
+                if (this.data.prevTick != this.data.currentTick){
+                    // console.log(this.data.currentTick)
+
+                    if ( this.data.currentTick < 1 ) {
+                        this.data.currentBeat = 0
+                        this.data.beatInLoop = 0
+                        this.data.tickInLoop = 0
+                    }
+                    else {
+                        this.data.tickInLoop = (this.data.currentTick % (12 * this.data.beatsPerBar * this.data.barsPerLoop))
+                        this.data.currentBeat = Math.floor(((this.data.currentTick - 1) / 12) +1)
+                        this.data.beatInLoop = ((this.data.currentBeat -1) % (this.data.beatsPerBar * this.data.barsPerLoop))+1
+                        this.data.beatInBar = ((this.data.beatInLoop-1) % this.data.beatsPerBar) +1
+                        this.data.barInLoop = Math.floor(((this.data.beatInLoop-1) / this.data.beatsPerBar) +1)
+                    }
+                }
+            },
+        })
+    </script>
+  </head>
+  <body>
+    <a-scene >
+      
+    <a-sky color="green"></a-sky>
+    <a-entity metronome="bpm:90;"></a-entity>
+    <a-sphere color="rgb(10,30,200)" position="0 0 -4" radius="2"></a-sphere>
+     <a-entity light="type: point; color: #f4f4f4; intensity: 0.2; distance: 0" position="8 10 18"></a-entity>
+     <a-entity light="type: point; color: #f4f4f4; intensity: 0.6; distance: 0" position="-8 10 -18"></a-entity>
+     <a-entity light="type: ambient; color: #f4f4f4; intensity: 0.4;" position="-8 10 -18"></a-entity>
+    </a-scene>
+
+  </body>
+</html>
