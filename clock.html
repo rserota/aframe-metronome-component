@@ -8,38 +8,38 @@
         AFRAME.registerComponent('metronome', {
             schema: {
                 //beats per minute
-                bpm: {
-                    type: 'number',
-                    default: 80,
-                },
-                beatLen: { type: 'number' },
-                tickLen: { type: 'number' },
-                beatsPerBar: { type: 'number', default: 4},
-                barsPerLoop: { type: 'number', default: 4},
-                prevBeat: { type: 'number'},
-                currentBeat:{ type: 'number'},
-                prevTick: { type: 'number'},
-                currentTick:{ type: 'number'},
-                beatInLoop: { type: 'number'},
-                tickInLoop: { type: 'number'},
-
-                startTime : { default: performance.now() + 500 }
+                bpm         : { type: 'number', default: 80},
+                beatLen     : { type: 'number' },
+                tickLen     : { type: 'number' },
+                beatsPerBar : { type: 'number', default: 4},
+                barsPerLoop : { type: 'number', default: 4},
+                prevBeat    : { type: 'number'},
+                currentBeat : { type: 'number'},
+                prevTick    : { type: 'number'},
+                currentTick : { type: 'number'},
+                beatInLoop  : { type: 'number'},
+                tickInLoop  : { type: 'number'},
+                paused      : { type: 'bool',   default: false},
+                pauseOffset : { type: 'number', default: 0},
+                startTime   : { default: performance.now() + 500 },
+                pausedTime  : { type: 'number'},
             },
-            init: function(){
+            update: function(){
                 console.log('initialized!')
                 this.data.beatLen = 60000 / this.data.bpm
                 this.data.tickLen = this.data.beatLen / 12
                 console.log(this.data)
 
             },
+            pause: function(){
+                this.data.pausedTime = performance.now()
+            },
+            play: function(){
+                var pauseDuration = performance.now() - this.data.pausedTime
+                this.data.pauseOffset += pauseDuration
+            },
             tick: function(){
-                if ( this.data.prevBeat != this.data.currentBeat){
-                    console.log('beat in loop',this.data.beatInLoop)
-                    console.log('beat in bar', this.data.beatInBar)
-                    console.log('bar in loop', this.data.barInLoop)
-                    console.log('=-=-=-=-=-=-=-=')
-                }
-                var timeElapsed = (performance.now() - this.data.startTime)
+                var timeElapsed = (performance.now() - (this.data.startTime + this.data.pauseOffset))
                 this.data.prevBeat = this.data.currentBeat
                 this.data.prevTick = this.data.currentTick
                 this.data.currentTick = Math.floor(timeElapsed / this.data.tickLen)
@@ -57,6 +57,14 @@
                         this.data.beatInLoop = ((this.data.currentBeat -1) % (this.data.beatsPerBar * this.data.barsPerLoop))+1
                         this.data.beatInBar = ((this.data.beatInLoop-1) % this.data.beatsPerBar) +1
                         this.data.barInLoop = Math.floor(((this.data.beatInLoop-1) / this.data.beatsPerBar) +1)
+                        if ( this.data.prevBeat != this.data.currentBeat){
+                            // console.log('beat in loop',this.data.beatInLoop)
+                            this.el.emit('beat', {
+                                currentBeat : this.data.currentBeat,
+                                beatInBar   : this.data.beatInBar,
+                                beatInLoop  : this.data.beatInLoop,
+                            })
+                        }
                     }
                 }
             },
