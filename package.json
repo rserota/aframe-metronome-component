@@ -1,0 +1,29 @@
+{
+  "name": "aframe-metronome-component",
+  "version": "1.0.0",
+  "description": "A simple component that fires events at specified intervals. Useful for musical looping applications.",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rserota/aframe-metronome-component.git"
+  },
+  "keywords": [
+    "aframe",
+    "webvr",
+    "metronome",
+    "music",
+    "looping"
+  ],
+  "author": "Raphael Serota",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rserota/aframe-metronome-component/issues"
+  },
+  "homepage": "https://github.com/rserota/aframe-metronome-component#readme"
+}
