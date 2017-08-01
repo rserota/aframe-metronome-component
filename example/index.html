@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>A-Frame Clock</title>
-    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
-    <script src="/aframe-metronome-component.js"></script>
-  </head>
-  <body>
-    <a-scene >
+    <head>
+        <meta charset="utf-8">
+        <title>A-Frame Clock</title>
+        <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-metronome-component@1.0.0"></script>
+        <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+        <script src="https://unpkg.com/web-audio-daw@2.3.1"></script>
+    </head>
+    <body>
+        <a-scene >
       
-    <a-sky color="green"></a-sky>
-    <a-entity metronome="bpm:90;"></a-entity>
-    <a-sphere color="rgb(10,30,200)" position="0 0 -4" radius="2"></a-sphere>
-     <a-entity light="type: point; color: #f4f4f4; intensity: 0.2; distance: 0" position="8 10 18"></a-entity>
-     <a-entity light="type: point; color: #f4f4f4; intensity: 0.6; distance: 0" position="-8 10 -18"></a-entity>
-     <a-entity light="type: ambient; color: #f4f4f4; intensity: 0.4;" position="-8 10 -18"></a-entity>
-    </a-scene>
+            <a-entity id="clock" metronome="bpm:160;beatsPerBar:8;barsPerLoop:4"></a-entity>
+              <a-entity environment="preset: starry"></a-entity>  
+            <!-- <a-entity light="type: ambient; color: #f4f4f4; intensity: 0.4;" position="-8 10 -18"></a-entity> -->
+        </a-scene>
 
-  </body>
+        <script src="/main.js"></script>
+    </body>
 </html>

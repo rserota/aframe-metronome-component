@@ -60,6 +60,7 @@ AFRAME.registerComponent('metronome', {
                         currentBeat : this.data.currentBeat,
                         beatInBar   : this.data.beatInBar,
                         beatInLoop  : this.data.beatInLoop,
+                        barInLoop   : this.data.barInLoop,
                     })
                 }
             }

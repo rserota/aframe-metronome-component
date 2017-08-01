@@ -2,7 +2,7 @@
   "name": "aframe-metronome-component",
   "version": "1.0.0",
   "description": "A simple component that fires events at specified intervals. Useful for musical looping applications.",
-  "main": "index.js",
+  "main": "aframe-metronome-component.js",
   "directories": {
     "example": "example"
   },
