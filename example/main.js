@@ -5,6 +5,7 @@ var bass = new Wad({
     source : 'sine',
     volume: .9,
     globalReverb : true,
+    panning : [-5, 0, 0],
     env : {
         attack : .02,
         decay : .1,
@@ -33,21 +34,34 @@ var clock = document.getElementById('clock')
 var lowBass = document.getElementById('lowBass')
 var highBass = document.getElementById('highBass')
 var kickEl = document.getElementById('kick')
+var hatOpen = new Wad(Wad.presets.hiHatOpen)
+hatOpen.globalReverb = true
 clock.addEventListener('beat', function(event){
     console.dir(event.detail.currentLoop)
     var ed = event.detail
+
+// kick // 
     if ( ed.beatInBar === 1 || ed.beatInBar === 5 ) {
         kick.play()
         flash(kickEl,100)
     }
-    if ( ed.beatInBar === 3 || ed.beatInBar ===6 || ed.beatInBar === 7 ) {
+    if ( ed.beatInBar === 3 || ed.beatInBar === 7 ) {
         snare.play()
         // flash(snareEl,100)
     }
-    if (ed.barInLoop === 4 && ed.beatInBar === 8 ) {
+    if ( ed.barInLoop === 4 && ed.beatInBar === 8 ) {
         kick.play()
         flash(kickEl,100)
     }
+
+    if ( [2,4,6,7].includes(ed.beatInBar) ){
+        hat.play()
+    }
+    if ( [8].includes(ed.beatInBar) && ed.barInLoop !== 4 ) {
+        hatOpen.play()
+    }
+
+// Bass //
     if ( ed.barInLoop === 1 ) {
         if ( ed.beatInBar % 2 === 1 ) {
             bass.play({pitch:'C3', panning:[-5,0,0]})
@@ -96,6 +110,19 @@ clock.addEventListener('beat', function(event){
             flash(highBass, 200)
 
         }
+    }
+
+
+    // if (ed.barIn)
+
+})
+
+clock.addEventListener('tick',function(event){
+    var ed = event.detail
+    console.log(ed.tickInLoop%96)
+    if ( ed.tickInLoop %96 === 56 ) {
+        snare.play()
+        // flash(snareEl,100)
     }
 })
 Wad.setGlobalReverb({impulse : '/widehall.wav', wet : .5})
