@@ -11,6 +11,7 @@ AFRAME.registerComponent('metronome', {
         currentTick : { type: 'number'},
         beatInLoop  : { type: 'number'},
         tickInLoop  : { type: 'number'},
+        currentLoop : { type: 'number'},
         paused      : { type: 'bool',   default: false},
         pauseOffset : { type: 'number', default: 0},
         startTime   : { default: performance.now() + 500 },
@@ -37,6 +38,9 @@ AFRAME.registerComponent('metronome', {
         this.data.prevTick    = this.data.currentTick
         this.data.currentTick = Math.floor(timeElapsed / this.data.tickLen)
         if (this.data.prevTick != this.data.currentTick){
+            if ( this.data.currentTick === 1 ) {
+                this.data.currentLoop++
+            }
             if ( this.data.currentTick < 1 ) {
                 this.data.currentBeat = 0
                 this.data.beatInLoop  = 0
@@ -51,7 +55,12 @@ AFRAME.registerComponent('metronome', {
 
                 this.el.emit('tick', {
                     currentTick : this.data.currentTick,
-                    tickInLoop  : this.data.tickInLoop
+                    tickInLoop  : this.data.tickInLoop,
+                    currentBeat : this.data.currentBeat,
+                    beatInBar   : this.data.beatInBar,
+                    beatInLoop  : this.data.beatInLoop,
+                    barInLoop   : this.data.barInLoop,
+                    currentLoop : this.data.currentLoop,
                 })
 
                 if ( this.data.prevBeat != this.data.currentBeat){
@@ -61,6 +70,7 @@ AFRAME.registerComponent('metronome', {
                         beatInBar   : this.data.beatInBar,
                         beatInLoop  : this.data.beatInLoop,
                         barInLoop   : this.data.barInLoop,
+                        currentLoop : this.data.currentLoop,
                     })
                 }
             }
