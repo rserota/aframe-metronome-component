@@ -34,7 +34,7 @@ var lowBass = document.getElementById('lowBass')
 var highBass = document.getElementById('highBass')
 var kickEl = document.getElementById('kick')
 clock.addEventListener('beat', function(event){
-    console.dir(event.detail)
+    console.dir(event.detail.currentLoop)
     var ed = event.detail
     if ( ed.beatInBar === 1 || ed.beatInBar === 5 ) {
         kick.play()

@@ -38,7 +38,7 @@ AFRAME.registerComponent('metronome', {
         this.data.prevTick    = this.data.currentTick
         this.data.currentTick = Math.floor(timeElapsed / this.data.tickLen)
         if (this.data.prevTick != this.data.currentTick){
-            if ( this.data.currentTick === 1 ) {
+            if ( this.data.tickInLoop === 1 ) {
                 this.data.currentLoop++
             }
             if ( this.data.currentTick < 1 ) {
