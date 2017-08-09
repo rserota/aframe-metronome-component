@@ -1,5 +1,16 @@
-console.log('hi')
-var kick = new Wad({source : '/kick.mp3'})
+var flash = function(el, time){
+    time = time || 100
+    el.setAttribute('color', 'white')
+    setTimeout(function(){
+        el.setAttribute('color', 'gray')
+    }, time)
+    // el.setAttribute('light', "type: point; intensity: 0.75; distance: 50; decay: 2")
+    // setTimeout(function(){
+    //     el.setAttribute('light', "type: point; intensity: 0; distance: 50; decay: 2")
+    // }, time)
+}
+
+var kick = new Wad({source : '/kick.mp3', panning:[0, 0, 5]})
 kick.globalReverb = true
 var bass = new Wad({
     source : 'sine',
@@ -15,19 +26,11 @@ var bass = new Wad({
     }
 })
 var hat = new Wad(Wad.presets.hiHatClosed)
+hat.setVolume(.4)
 hat.globalReverb = true
-var flash = function(el, time){
-    time = time || 100
-    el.setAttribute('color', 'white')
-    setTimeout(function(){
-        el.setAttribute('color', 'gray')
-    }, time)
-    // el.setAttribute('light', "type: point; intensity: 0.75; distance: 50; decay: 2")
-    // setTimeout(function(){
-    //     el.setAttribute('light', "type: point; intensity: 0; distance: 50; decay: 2")
-    // }, time)
-}
+
 var snare = new Wad(Wad.presets.snare)
+snare.setVolume(9)
 snare.globalReverb = true
 var snareEl = document.getElementById('snare')
 var clock = document.getElementById('clock')
@@ -36,6 +39,7 @@ var highBass = document.getElementById('highBass')
 var kickEl = document.getElementById('kick')
 var hatOpen = new Wad(Wad.presets.hiHatOpen)
 hatOpen.globalReverb = true
+var ghost = new Wad(Wad.presets.ghost)
 clock.addEventListener('beat', function(event){
     console.dir(event.detail.currentLoop)
     var ed = event.detail
@@ -46,8 +50,8 @@ clock.addEventListener('beat', function(event){
         flash(kickEl,100)
     }
     if ( ed.beatInBar === 3 || ed.beatInBar === 7 ) {
-        snare.play()
-        // flash(snareEl,100)
+        snare.play({panning:[0, 3, 5]})
+        flash(snareEl,100)
     }
     if ( ed.barInLoop === 4 && ed.beatInBar === 8 ) {
         kick.play()
@@ -113,16 +117,32 @@ clock.addEventListener('beat', function(event){
     }
 
 
-    // if (ed.barIn)
 
 })
 
 clock.addEventListener('tick',function(event){
     var ed = event.detail
-    console.log(ed.tickInLoop%96)
     if ( ed.tickInLoop %96 === 56 ) {
         snare.play()
-        // flash(snareEl,100)
+        flash(snareEl,100)
+    }
+    if ( ed.tickInLoop === 1 ){
+        ghost.play({pitch: 'G5'})
+    }
+    else if ( ed.tickInLoop === 91 ){
+        ghost.play({pitch: 'Gb5', env : {hold :.1}})
+    }
+    else if ( ed.tickInLoop === 97 ){
+        ghost.play({pitch: 'F5'})
+    }
+    else if ( ed.tickInLoop === 194 ){
+        ghost.play({pitch: 'Ab5'})
+    }
+    else if ( ed.tickInLoop === 264 ){
+        ghost.play({pitch: 'G5'})
+    }
+    else if ( ed.tickInLoop === 288 ){
+        ghost.play({pitch: 'Bb5'})
     }
 })
 Wad.setGlobalReverb({impulse : '/widehall.wav', wet : .5})
