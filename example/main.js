@@ -154,15 +154,45 @@ clock.addEventListener('tick',function(event){
         ghost.play({pitch: 'Bb5'})
     }
 
-    if ( [19,37,115,132,211,229,307,355].includes(ed.tickInLoop) ){
+    if ( [19, 19+384,37,37+384,115,115+384,132,132+384,211,211+384,229,229+384,307,307+384,355].includes(ed.tickInLoop) ){
         piano.play({pitch: 'C5'})
     }
-    if ( [25, 121, 217, 313, 361].includes(ed.tickInLoop) ){
+    if ( [25, 121, 217, 313, 361, 409, 505, 601].includes(ed.tickInLoop) ){
         piano.play({pitch: 'Eb5', filter:{q:15}})
     }
-    if ( [43, 139, 235].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'Eb5', filter:{q:15}})
+    if ( [43, 139, 235, 427, 523, 619].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'F5', filter:{release:.2}})
     }
+    if ( [649].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'F5'})
+    }
+
+    if ( [373].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'G5', filter:{q:15}})
+    }
+    if ( [673].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'G5'})
+    }
+    if ( [667].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'Gb5', filter:{q:15}})
+    }
+    if ( [697].includes(ed.tickInLoop) ){
+        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}})
+    }
+    if ( [703].includes(ed.tickInLoop) ){
+        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}})
+    }
+    if ( [709].includes(ed.tickInLoop) ){
+        piano.play( {volume : .6, pitch : 'C6', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'F6', filter : { q : 15}})
+    }
+    if ( [715].includes(ed.tickInLoop) ){
+        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}})
+    }
+
 })
 Wad.setGlobalReverb({impulse : '/widehall.wav', wet : .5})
 console.log(clock)
