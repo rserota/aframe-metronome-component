@@ -40,8 +40,12 @@ var kickEl = document.getElementById('kick')
 var hatOpen = new Wad(Wad.presets.hiHatOpen)
 hatOpen.globalReverb = true
 var ghost = new Wad(Wad.presets.ghost)
+var piano = new Wad({source : 'square', volume : 1.4, env : {attack : .01, decay : .005, sustain : .2, hold : .015, release : .3}, filter : {type : 'lowpass', frequency : 1200, q : 8.5, env : {attack : .2, frequency : 600}}})
+piano.globalReverb = true
+
+
 clock.addEventListener('beat', function(event){
-    console.dir(event.detail.currentLoop)
+    console.dir(event.detail)
     var ed = event.detail
 
 // kick // 
@@ -61,50 +65,55 @@ clock.addEventListener('beat', function(event){
     if ( [2,4,6,7].includes(ed.beatInBar) ){
         hat.play()
     }
-    if ( [8].includes(ed.beatInBar) && ed.barInLoop !== 4 ) {
+    if ( [8].includes(ed.beatInBar) && [1,2,3,5,6,7].includes(ed.barInLoop)) {
         hatOpen.play()
     }
 
 // Bass //
-    if ( ed.barInLoop === 1 ) {
+    if ( [1,5].includes(ed.barInLoop) ) {
         if ( ed.beatInBar % 2 === 1 ) {
-            bass.play({pitch:'C3', panning:[-5,0,0]})
+            bass.play({pitch:'C2', panning:[-5,0,0]})
             flash(lowBass, 300)
         }
         else {
-            bass.play({pitch:'C4', panning:[5,0,0]})
+            bass.play({pitch:'C3', panning:[5,0,0]})
             flash(highBass, 300)
         }
     }
 
-    if ( ed.barInLoop === 2 ) {
+    if ( [2,6].includes(ed.barInLoop) ) {
         if ( ed.beatInBar % 2 === 1 ) {
-            bass.play({pitch:'Eb3', panning:[-5,0,0]})
+            bass.play({pitch:'F2', panning:[-5,0,0]})
             flash(lowBass, 200)
 
         }
         else {
-            bass.play({pitch:'Eb4', panning:[5,0,0]})
+            bass.play({pitch:'F3', panning:[5,0,0]})
             flash(highBass, 200)
 
         }
     }
 
-    if ( ed.barInLoop === 3 ) {
+    if ( [3,7].includes(ed.barInLoop) ) {
         if ( ed.beatInBar % 2 === 1 ) {
-            bass.play({pitch:'Bb2', panning:[-5,0,0]})
+            bass.play({pitch:'Ab2', panning:[-5,0,0]})
             flash(lowBass, 200)
 
         }
         else {
-            bass.play({pitch:'Bb3', panning:[5,0,0]})
+            bass.play({pitch:'Ab3', panning:[5,0,0]})
             flash(highBass, 200)
 
         }
     }
     
-    if ( ed.barInLoop === 4 ) {
-        if ( ed.beatInBar % 2 === 1 ) {
+    if ( [4,8].includes(ed.barInLoop) ) {
+        if ( ed.beatInBar === 8 ) {
+            bass.play({pitch:'Bb2', panning:[-5,0,0]})
+            flash(lowBass, 200)
+
+        }
+        else if ( ed.beatInBar % 2 === 1 ) {
             bass.play({pitch:'G2', panning:[-5,0,0]})
             flash(lowBass, 200)
 
@@ -126,23 +135,33 @@ clock.addEventListener('tick',function(event){
         snare.play()
         flash(snareEl,100)
     }
-    if ( ed.tickInLoop === 1 ){
+    if (  [1,1+384].includes(ed.tickInLoop) ){
         ghost.play({pitch: 'G5'})
     }
-    else if ( ed.tickInLoop === 91 ){
+    else if ( [91,91+384].includes(ed.tickInLoop) ){
         ghost.play({pitch: 'Gb5', env : {hold :.1}})
     }
-    else if ( ed.tickInLoop === 97 ){
+    else if ( [97,97+384].includes(ed.tickInLoop) ){
         ghost.play({pitch: 'F5'})
     }
-    else if ( ed.tickInLoop === 194 ){
+    else if ( [194,194+384].includes(ed.tickInLoop) ){
         ghost.play({pitch: 'Ab5'})
     }
-    else if ( ed.tickInLoop === 264 ){
-        ghost.play({pitch: 'G5'})
+    else if ( [264,264+384].includes(ed.tickInLoop) ){
+        ghost.play({pitch: 'G5', env : {hold :1.4}})
     }
-    else if ( ed.tickInLoop === 288 ){
+    else if ( [288,288+384].includes(ed.tickInLoop) ){
         ghost.play({pitch: 'Bb5'})
+    }
+
+    if ( [19,37,115,132,211,229,307,355].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'C5'})
+    }
+    if ( [25, 121, 217, 313, 361].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'Eb5', filter:{q:15}})
+    }
+    if ( [43, 139, 235].includes(ed.tickInLoop) ){
+        piano.play({pitch: 'Eb5', filter:{q:15}})
     }
 })
 Wad.setGlobalReverb({impulse : '/widehall.wav', wet : .5})

@@ -38,9 +38,7 @@ AFRAME.registerComponent('metronome', {
         this.data.prevTick    = this.data.currentTick
         this.data.currentTick = Math.floor(timeElapsed / this.data.tickLen)
         if (this.data.prevTick != this.data.currentTick){
-            if ( this.data.tickInLoop === 1 ) {
-                this.data.currentLoop++
-            }
+
             if ( this.data.currentTick < 1 ) {
                 this.data.currentBeat = 0
                 this.data.beatInLoop  = 0
@@ -52,7 +50,9 @@ AFRAME.registerComponent('metronome', {
                 this.data.beatInLoop  = ((this.data.currentBeat -1) % (this.data.beatsPerBar * this.data.barsPerLoop))+1
                 this.data.beatInBar   = ((this.data.beatInLoop-1) % this.data.beatsPerBar) +1
                 this.data.barInLoop   = Math.floor(((this.data.beatInLoop-1) / this.data.beatsPerBar) +1)
-
+                if ( this.data.tickInLoop === 1 ) {
+                    this.data.currentLoop++
+                }
                 this.el.emit('tick', {
                     currentTick : this.data.currentTick,
                     tickInLoop  : this.data.tickInLoop,
@@ -61,6 +61,8 @@ AFRAME.registerComponent('metronome', {
                     beatInLoop  : this.data.beatInLoop,
                     barInLoop   : this.data.barInLoop,
                     currentLoop : this.data.currentLoop,
+                    beatsPerBar : this.data.beatsPerBar,
+                    barsPerLoop : this.data.barsPerLoop,
                 })
 
                 if ( this.data.prevBeat != this.data.currentBeat){
@@ -71,6 +73,8 @@ AFRAME.registerComponent('metronome', {
                         beatInLoop  : this.data.beatInLoop,
                         barInLoop   : this.data.barInLoop,
                         currentLoop : this.data.currentLoop,
+                        beatsPerBar : this.data.beatsPerBar,
+                        barsPerLoop : this.data.barsPerLoop,
                     })
                 }
             }
