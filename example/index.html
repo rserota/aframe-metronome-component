@@ -6,11 +6,13 @@
         <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
         <script src="https://unpkg.com/aframe-metronome-component@1.2.1"></script>
         <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+        <script src="https://unpkg.com/web-audio-daw@2.6.1"></script>
+
         <script src="/clickListener.js"></script>
     </head>
     <body>
         <a-scene >
-            <a-entity camera="userHeight: 1.6" look-controls rotation="0 180 0">
+            <a-entity camera="userHeight: 1.6" look-controls rotation="0 160 0">
                 <a-entity cursor="fuse: true; fuseTimeout: 500"
                           position="0 0 -1"
                           geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
@@ -18,7 +20,7 @@
                 </a-entity>
             </a-entity>
 
-            <a-sphere  position="0 1.5 5" color="green" click-listener light="type: point; intensity: 0.3; distance: 50; decay: 2" radius="1"></a-sphere>
+            <a-sphere id="start" position="0 1.5 3" color="green" click-listener light="type: point; intensity: 0.3; distance: 50; decay: 2" radius="1"></a-sphere>
             <a-entity light="type: ambient; color: #BBB"></a-entity>
             <!-- <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity> -->
             <a-sphere id="kick" position="0 0 5" color="#222" light="type: point; intensity: 0.3; distance: 50; decay: 2" radius="1"></a-sphere>
@@ -36,7 +38,6 @@
 
         </a-scene>
 
-        <script src="https://unpkg.com/web-audio-daw@2.6.1"></script>
         <script src="/main.js"></script>
     </body>
 </html>
