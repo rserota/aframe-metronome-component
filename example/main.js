@@ -1,8 +1,8 @@
 var flash = function(el, time){
     time = time || 100
-    el.setAttribute('color', 'white')
+    el.setAttribute('color', '#eee')
     setTimeout(function(){
-        el.setAttribute('color', 'gray')
+        el.setAttribute('color', '#222')
     }, time)
     // el.setAttribute('light', "type: point; intensity: 0.75; distance: 50; decay: 2")
     // setTimeout(function(){
@@ -25,6 +25,9 @@ var bass = new Wad({
         release : .1
     }
 })
+for ( var inst in Wad.presets ) {
+    Wad.presets[inst].panning = [0,0,0]
+}
 var hat = new Wad(Wad.presets.hiHatClosed)
 hat.setVolume(.4)
 hat.globalReverb = true
@@ -37,10 +40,14 @@ var clock = document.getElementById('clock')
 var lowBass = document.getElementById('lowBass')
 var highBass = document.getElementById('highBass')
 var kickEl = document.getElementById('kick')
+var hatEl = document.getElementById('hiHatClosed')
 var hatOpen = new Wad(Wad.presets.hiHatOpen)
-hatOpen.globalReverb = true
+var hatOpenEl = document.getElementById('hiHatOpen')
 var ghost = new Wad(Wad.presets.ghost)
-var piano = new Wad({source : 'square', volume : 1.4, env : {attack : .01, decay : .005, sustain : .2, hold : .015, release : .3}, filter : {type : 'lowpass', frequency : 1200, q : 8.5, env : {attack : .2, frequency : 600}}})
+var ghostEl = document.getElementById('ghost')
+var piano = new Wad({source : 'square', volume : 1.4, panning: [-3, 3, 3], env : {attack : .01, decay : .005, sustain : .2, hold : .015, release : .3}, filter : {type : 'lowpass', frequency : 1200, q : 8.5, env : {attack : .2, frequency : 600}}})
+var pianoEl = document.getElementById('piano')
+hatOpen.globalReverb = true
 piano.globalReverb = true
 
 
@@ -50,23 +57,29 @@ clock.addEventListener('beat', function(event){
 
 // kick // 
     if ( ed.beatInBar === 1 || ed.beatInBar === 5 ) {
-        kick.play()
+        kick.play({panning: [0, 0, 5]})
         flash(kickEl,100)
     }
+    if ( ed.barInLoop === 4 && ed.beatInBar === 8 ) {
+        kick.play({panning: [0, 0, 5]})
+        flash(kickEl,100)
+    }
+// snare //
     if ( ed.beatInBar === 3 || ed.beatInBar === 7 ) {
         snare.play({panning:[0, 3, 5]})
         flash(snareEl,100)
     }
-    if ( ed.barInLoop === 4 && ed.beatInBar === 8 ) {
-        kick.play()
-        flash(kickEl,100)
+
+// closed hat //
+    if ( [2,4,6,7].includes(ed.beatInBar) ){
+        hat.play({panning: [2, 3, 5]})
+        flash(hatEl, 75)
     }
 
-    if ( [2,4,6,7].includes(ed.beatInBar) ){
-        hat.play()
-    }
+// open hat //
     if ( [8].includes(ed.beatInBar) && [1,2,3,5,6,7].includes(ed.barInLoop)) {
-        hatOpen.play()
+        hatOpen.play({panning: [-2, 3, 5]})
+        flash(hatOpenEl, 250)
     }
 
 // Bass //
@@ -132,65 +145,82 @@ clock.addEventListener('beat', function(event){
 clock.addEventListener('tick',function(event){
     var ed = event.detail
     if ( ed.tickInLoop %96 === 56 ) {
-        snare.play()
+        snare.play({panning:[0, 3, 5]})
         flash(snareEl,100)
     }
     if (  [1,1+384].includes(ed.tickInLoop) ){
-        ghost.play({pitch: 'G5'})
+        ghost.play({pitch: 'G5', panning: [3,3,3]})
+        flash(ghostEl, 2000)
     }
     else if ( [91,91+384].includes(ed.tickInLoop) ){
-        ghost.play({pitch: 'Gb5', env : {hold :.1}})
+        ghost.play({pitch: 'Gb5', env : {hold :.1}, panning: [3,3,3]})
+        flash(ghostEl, 100)
     }
     else if ( [97,97+384].includes(ed.tickInLoop) ){
-        ghost.play({pitch: 'F5'})
+        ghost.play({pitch: 'F5', panning: [3,3,3]})
+        flash(ghostEl, 2000)
     }
     else if ( [194,194+384].includes(ed.tickInLoop) ){
-        ghost.play({pitch: 'Ab5'})
+        ghost.play({pitch: 'Ab5', panning: [3,3,3]})
+        flash(ghostEl, 2000)
     }
     else if ( [264,264+384].includes(ed.tickInLoop) ){
-        ghost.play({pitch: 'G5', env : {hold :1.4}})
+        ghost.play({pitch: 'G5', env : {hold :1.4}, panning: [3,3,3]})
+        flash(ghostEl, 400)
     }
     else if ( [288,288+384].includes(ed.tickInLoop) ){
-        ghost.play({pitch: 'Bb5'})
+        ghost.play({pitch: 'Bb5', panning: [3,3,3]})
+        flash(ghostEl, 2000)
     }
 
     if ( [19, 19+384,37,37+384,115,115+384,132,132+384,211,211+384,229,229+384,307,307+384,355].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'C5'})
+        piano.play({pitch: 'C5', panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [25, 121, 217, 313, 361, 409, 505, 601].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'Eb5', filter:{q:15}})
+        piano.play({pitch: 'Eb5', filter:{q:15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [43, 139, 235, 427, 523, 619].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'F5', filter:{release:.2}})
+        piano.play({pitch: 'F5', filter:{release:.2}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [649].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'F5'})
+        piano.play({pitch: 'F5', panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
 
     if ( [373].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'G5', filter:{q:15}})
+        piano.play({pitch: 'G5', filter:{q:15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [673].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'G5'})
+        piano.play({pitch: 'G5', panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [667].includes(ed.tickInLoop) ){
-        piano.play({pitch: 'Gb5', filter:{q:15}})
+        piano.play({pitch: 'Gb5', filter:{q:15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [697].includes(ed.tickInLoop) ){
-        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}})
-        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}, panning: [-3,3,3]})
+        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [703].includes(ed.tickInLoop) ){
-        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}})
-        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}, panning: [-3,3,3]})
+        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [709].includes(ed.tickInLoop) ){
-        piano.play( {volume : .6, pitch : 'C6', filter : { q : 15}})
-        piano.play( {volume : .6, pitch : 'F6', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'C6', filter : { q : 15}, panning: [-3,3,3]})
+        piano.play( {volume : .6, pitch : 'F6', filter : { q : 15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
     if ( [715].includes(ed.tickInLoop) ){
-        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}})
-        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}})
+        piano.play( {volume : .6, pitch : 'D6', filter : { q : 15}, panning: [-3,3,3]})
+        piano.play( {volume : .6, pitch : 'G5', filter : { q : 15}, panning: [-3,3,3]})
+        flash(pianoEl, 80)
     }
 
 })
