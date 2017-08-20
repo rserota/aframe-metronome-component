@@ -4,14 +4,17 @@ var flash = function(el, time){
     setTimeout(function(){
         el.setAttribute('color', '#222')
     }, time)
-    // el.setAttribute('light', "type: point; intensity: 0.75; distance: 50; decay: 2")
-    // setTimeout(function(){
-    //     el.setAttribute('light', "type: point; intensity: 0; distance: 50; decay: 2")
-    // }, time)
+
+}
+
+// use 3d panning instead of stereo panning for all presets
+for ( var inst in Wad.presets ) {
+    Wad.presets[inst].panning = [0,0,0]
 }
 
 var kick = new Wad({source : '/kick.mp3', panning:[0, 0, 5]})
 kick.globalReverb = true
+
 var bass = new Wad({
     source : 'sine',
     volume: .9,
@@ -25,9 +28,7 @@ var bass = new Wad({
         release : .1
     }
 })
-for ( var inst in Wad.presets ) {
-    Wad.presets[inst].panning = [0,0,0]
-}
+
 var hat = new Wad(Wad.presets.hiHatClosed)
 hat.setVolume(.4)
 hat.globalReverb = true
@@ -35,6 +36,10 @@ hat.globalReverb = true
 var snare = new Wad(Wad.presets.snare)
 snare.setVolume(9)
 snare.globalReverb = true
+
+var piano = new Wad({source : 'square', volume : 1.4, panning: [-3, 3, 3], env : {attack : .01, decay : .005, sustain : .2, hold : .015, release : .3}, filter : {type : 'lowpass', frequency : 1200, q : 8.5, env : {attack : .2, frequency : 600}}})
+piano.globalReverb = true
+
 var snareEl = document.getElementById('snare')
 var clock = document.getElementById('clock')
 var lowBass = document.getElementById('lowBass')
@@ -45,10 +50,8 @@ var hatOpen = new Wad(Wad.presets.hiHatOpen)
 var hatOpenEl = document.getElementById('hiHatOpen')
 var ghost = new Wad(Wad.presets.ghost)
 var ghostEl = document.getElementById('ghost')
-var piano = new Wad({source : 'square', volume : 1.4, panning: [-3, 3, 3], env : {attack : .01, decay : .005, sustain : .2, hold : .015, release : .3}, filter : {type : 'lowpass', frequency : 1200, q : 8.5, env : {attack : .2, frequency : 600}}})
 var pianoEl = document.getElementById('piano')
 hatOpen.globalReverb = true
-piano.globalReverb = true
 
 
 
