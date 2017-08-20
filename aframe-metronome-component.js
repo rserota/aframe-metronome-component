@@ -14,7 +14,7 @@ AFRAME.registerComponent('metronome', {
         currentLoop : { type: 'number'},
         paused      : { type: 'bool',   default: false},
         pauseOffset : { type: 'number', default: 0},
-        startTime   : { default: performance.now() + 500 },
+        startTime   : { type: 'number', default: performance.now() + 500 },
         pausedTime  : { type: 'number'},
     },
 

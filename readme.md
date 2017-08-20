@@ -15,7 +15,54 @@ A component for [A-Frame](https://aframe.io) that fires events at a specified rh
 
 | Event    | Description |
 | -------- | ----------- |
-| beat | The Entity is about to start moving along the path |
-| movingended   | The Entity has completed moving along the path         |
-| alongpath-trigger-activated   | The Entity has activated a Trigger-Point (Fired on the corresponding 'curve-point') |
-| alongpath-trigger-deactivated   | The Entity has deactivated a Trigger-Point (Fired on the corresponding 'curve-point')          |
+| beat | Fires on every beat of the loop, according to the component's `bpm` property. Contains information about the current beat relative to the current bar, current loop, total beats, etc. |
+| tick   | Contains roughly the same information as the `beat` event, but fires more frequently. Each `beat` is divided into 12 `tick`s.  |
+
+## Installation
+
+### Browser Installation
+
+
+```html
+<head>
+    <title>A Musical A-Frame Scene</title>
+    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-metronome-component"></script>
+</head>
+
+<body>
+    <a-scene>
+        <a-entity id="clock" metronome="bpm:136;beatsPerBar:8;barsPerLoop:8"></a-entity>
+    
+    </a-scene>
+</body>
+```
+
+#### NPM Installation
+
+Install via NPM:
+
+```bash
+npm install aframe-metronome-component
+```
+
+## Usage
+
+```javascript
+var clock = document.getElementById('clock')
+
+clock.addEventListener('beat', function(event){
+    console.log(event.detail)
+    var ed = event.detail
+    if (  (ed.beatInBar % 2 === 1) && (ed.barInLoop !== 1) ) {
+        // code in this block will run on every other beat, except during the first bar of each loop
+        // e.g. snareDrum.play() 
+    }
+
+}
+
+clock.addEventListener('tick', function(event){
+    console.log(event.detail)
+}
+
+```
