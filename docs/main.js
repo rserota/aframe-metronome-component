@@ -45,7 +45,7 @@ piano.globalReverb = true
 
 var ghost = new Wad(Wad.presets.ghost)
 
-// Wad.setGlobalReverb({impulse : 'widehall.wav', wet : .5})
+Wad.setGlobalReverb({impulse : 'widehall.wav', wet : .5})
 
 
 var clock     = document.getElementById('clock')
@@ -64,10 +64,10 @@ var pianoEl   = document.getElementById('piano')
 
 var startMusic = function(){
 
-    clock.setAttribute('metronome', 'startTime', performance.now() + 500)
+    // clock.setAttribute('metronome', 'startTime', performance.now() + 500)
 
     clock.addEventListener('beat', function(event){
-        console.dir(event.detail)
+        // console.dir(event.detail)
         var ed = event.detail
 
 
@@ -169,35 +169,35 @@ var startMusic = function(){
             flash(snareEl,100)
         }
 
-        if ( ed.currentLoop > 2 ) {
+        if ( ed.currentLoop > 1 ) {
 
             if (  [1,1+384].includes(ed.tickInLoop) ){
                 ghost.play({pitch: 'G5', panning: [3,3,3]})
-                flash(ghostEl, 2000)
+                flash(ghostEl, 2500)
             }
             else if ( [91,91+384].includes(ed.tickInLoop) ){
                 ghost.play({pitch: 'Gb5', env : {hold :.1}, panning: [3,3,3]})
-                flash(ghostEl, 100)
+                flash(ghostEl, 150)
             }
             else if ( [97,97+384].includes(ed.tickInLoop) ){
                 ghost.play({pitch: 'F5', panning: [3,3,3]})
-                flash(ghostEl, 2000)
+                flash(ghostEl, 2500)
             }
             else if ( [194,194+384].includes(ed.tickInLoop) ){
                 ghost.play({pitch: 'Ab5', panning: [3,3,3]})
-                flash(ghostEl, 2000)
+                flash(ghostEl, 2500)
             }
             else if ( [264,264+384].includes(ed.tickInLoop) ){
                 ghost.play({pitch: 'G5', env : {hold :1.4}, panning: [3,3,3]})
-                flash(ghostEl, 400)
+                flash(ghostEl, 500)
             }
             else if ( [288,288+384].includes(ed.tickInLoop) ){
                 ghost.play({pitch: 'Bb5', panning: [3,3,3]})
-                flash(ghostEl, 2000)
+                flash(ghostEl, 2500)
             }
         }
 
-        if ( ed.currentLoop > 3 ) {
+        if ( ed.currentLoop > 2 ) {
 
             if ( [19, 19+384,37,37+384,115,115+384,132,132+384,211,211+384,229,229+384,307,307+384,355].includes(ed.tickInLoop) ){
                 piano.play({pitch: 'C5', panning: [-3,3,3]})
