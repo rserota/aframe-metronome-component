@@ -12,7 +12,7 @@ for ( var inst in Wad.presets ) {
     Wad.presets[inst].panning = [0,0,0]
 }
 
-var kick = new Wad({source : '/kick.mp3', panning:[0, 0, 5]})
+var kick = new Wad({source : 'kick.mp3', panning:[0, 0, 5]})
 kick.globalReverb = true
 
 var bass = new Wad({
@@ -45,7 +45,7 @@ piano.globalReverb = true
 
 var ghost = new Wad(Wad.presets.ghost)
 
-Wad.setGlobalReverb({impulse : '/widehall.wav', wet : .5})
+Wad.setGlobalReverb({impulse : 'widehall.wav', wet : .5})
 
 
 var clock     = document.getElementById('clock')
@@ -71,63 +71,7 @@ var startMusic = function(){
         var ed = event.detail
 
 
-    // Bass //
-        if ( [1,5].includes(ed.barInLoop) ) {
-            if ( ed.beatInBar % 2 === 1 ) {
-                bass.play({pitch:'C2', panning:[-5,0,0]})
-                flash(lowBass, 300)
-            }
-            else {
-                bass.play({pitch:'C3', panning:[5,0,0]})
-                flash(highBass, 300)
-            }
-        }
-
-        if ( [2,6].includes(ed.barInLoop) ) {
-            if ( ed.beatInBar % 2 === 1 ) {
-                bass.play({pitch:'F2', panning:[-5,0,0]})
-                flash(lowBass, 200)
-
-            }
-            else {
-                bass.play({pitch:'F3', panning:[5,0,0]})
-                flash(highBass, 200)
-
-            }
-        }
-
-        if ( [3,7].includes(ed.barInLoop) ) {
-            if ( ed.beatInBar % 2 === 1 ) {
-                bass.play({pitch:'Ab2', panning:[-5,0,0]})
-                flash(lowBass, 200)
-
-            }
-            else {
-                bass.play({pitch:'Ab3', panning:[5,0,0]})
-                flash(highBass, 200)
-
-            }
-        }
-        
-        if ( [4,8].includes(ed.barInLoop) ) {
-            if ( ed.beatInBar === 8 ) {
-                bass.play({pitch:'Bb2', panning:[-5,0,0]})
-                flash(lowBass, 200)
-
-            }
-            else if ( ed.beatInBar % 2 === 1 ) {
-                bass.play({pitch:'G2', panning:[-5,0,0]})
-                flash(lowBass, 200)
-
-            }
-            else {
-                bass.play({pitch:'G3', panning:[5,0,0]})
-                flash(highBass, 200)
-
-            }
-        }
-
-        if (ed.currentLoop > 1 ) {
+        if (ed.currentLoop > 0 ) {
 
         // kick // 
             if ( ed.beatInBar === 1 || ed.beatInBar === 5 ) {
@@ -157,11 +101,70 @@ var startMusic = function(){
             }
         }
 
+        if ( ed.currentLoop > 1 ) {
+
+        // Bass //
+            if ( [1,5].includes(ed.barInLoop) ) {
+                if ( ed.beatInBar % 2 === 1 ) {
+                    bass.play({pitch:'C2', panning:[-5,0,0]})
+                    flash(lowBass, 300)
+                }
+                else {
+                    bass.play({pitch:'C3', panning:[5,0,0]})
+                    flash(highBass, 300)
+                }
+            }
+
+            if ( [2,6].includes(ed.barInLoop) ) {
+                if ( ed.beatInBar % 2 === 1 ) {
+                    bass.play({pitch:'F2', panning:[-5,0,0]})
+                    flash(lowBass, 200)
+
+                }
+                else {
+                    bass.play({pitch:'F3', panning:[5,0,0]})
+                    flash(highBass, 200)
+
+                }
+            }
+
+            if ( [3,7].includes(ed.barInLoop) ) {
+                if ( ed.beatInBar % 2 === 1 ) {
+                    bass.play({pitch:'Ab2', panning:[-5,0,0]})
+                    flash(lowBass, 200)
+
+                }
+                else {
+                    bass.play({pitch:'Ab3', panning:[5,0,0]})
+                    flash(highBass, 200)
+
+                }
+            }
+            
+            if ( [4,8].includes(ed.barInLoop) ) {
+                if ( ed.beatInBar === 8 ) {
+                    bass.play({pitch:'Bb2', panning:[-5,0,0]})
+                    flash(lowBass, 200)
+
+                }
+                else if ( ed.beatInBar % 2 === 1 ) {
+                    bass.play({pitch:'G2', panning:[-5,0,0]})
+                    flash(lowBass, 200)
+
+                }
+                else {
+                    bass.play({pitch:'G3', panning:[5,0,0]})
+                    flash(highBass, 200)
+
+                }
+            }
+            
+        }
     })
 
     clock.addEventListener('tick',function(event){
         var ed = event.detail
-        if ( ed.tickInLoop %96 === 56 && ed.currentLoop > 1 ) {
+        if ( ed.tickInLoop %96 === 56 && ed.currentLoop > 0 ) {
             snare.play({panning:[0, 3, 5]})
             flash(snareEl,100)
         }
