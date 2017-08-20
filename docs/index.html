@@ -8,7 +8,6 @@
         <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
         <script src="https://unpkg.com/web-audio-daw@2.6.1"></script>
 
-        <script src="/clickListener.js"></script>
     </head>
     <body>
         <a-scene >
@@ -20,7 +19,6 @@
                 </a-entity>
             </a-entity>
 
-            <a-sphere id="start" position="0 1.5 3" color="green" click-listener light="type: point; intensity: 0.3; distance: 50; decay: 2" radius="1"></a-sphere>
             <a-entity light="type: ambient; color: #BBB"></a-entity>
             <!-- <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity> -->
             <a-sphere id="kick" position="0 0 5" color="#222" light="type: point; intensity: 0.3; distance: 50; decay: 2" radius="1"></a-sphere>
@@ -38,6 +36,6 @@
 
         </a-scene>
 
-        <script src="/main.js"></script>
+        <script src="/docs/main.js"></script>
     </body>
 </html>

@@ -66,7 +66,6 @@ AFRAME.registerComponent('metronome', {
                 })
 
                 if ( this.data.prevBeat != this.data.currentBeat){
-                    // console.log('beat in loop',this.data.beatInLoop)
                     this.el.emit('beat', {
                         currentBeat : this.data.currentBeat,
                         beatInBar   : this.data.beatInBar,
