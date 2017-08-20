@@ -45,7 +45,7 @@ piano.globalReverb = true
 
 var ghost = new Wad(Wad.presets.ghost)
 
-Wad.setGlobalReverb({impulse : 'widehall.wav', wet : .5})
+// Wad.setGlobalReverb({impulse : 'widehall.wav', wet : .5})
 
 
 var clock     = document.getElementById('clock')

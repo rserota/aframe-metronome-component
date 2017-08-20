@@ -45,7 +45,7 @@ AFRAME.registerComponent('metronome', {
                 this.data.tickInLoop  = 0
             }
             else {
-                this.data.tickInLoop  = (this.data.currentTick % (12 * this.data.beatsPerBar * this.data.barsPerLoop))
+                this.data.tickInLoop  = ((this.data.currentTick -1) % (12 * this.data.beatsPerBar * this.data.barsPerLoop))+1
                 this.data.currentBeat = Math.floor(((this.data.currentTick - 1) / 12) +1)
                 this.data.beatInLoop  = ((this.data.currentBeat -1) % (this.data.beatsPerBar * this.data.barsPerLoop))+1
                 this.data.beatInBar   = ((this.data.beatInLoop-1) % this.data.beatsPerBar) +1
